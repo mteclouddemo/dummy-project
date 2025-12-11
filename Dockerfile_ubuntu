@@ -1,0 +1,19 @@
+# On purpose obsolete images
+FROM docker.io/ubuntu:utopic-20150319
+
+ENV container=docker
+ARG http_proxy
+ARG https_proxy
+ARG no_proxy
+ARG PIP_CUSTOM_ARGS
+
+RUN mkdir .aws
+COPY aws_credentials .aws/credentials
+
+COPY dummy_webserver.py /srv/
+COPY pg_query.py /srv/
+
+HEALTHCHECK --interval=60s --timeout=5s --start-period=30s --retries=3 \
+    CMD nc -nzvw2 127.0.0.1 ${PORT:-80} || exit 1
+
+CMD ["python3", "/srv/dummy_webserver.py"]
