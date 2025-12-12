@@ -1,5 +1,5 @@
 # On purpose obsolete images
-FROM docker.io/ubuntu:utopic-20150319
+FROM docker.io/ubuntu:bionic-20200112
 
 ENV container=docker
 ARG http_proxy
