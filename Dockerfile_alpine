@@ -1,5 +1,5 @@
 # On purpose obsolete images
-FROM docker.io/alpine:3.0
+FROM docker.io/alpine:3.1
 
 ENV container=docker
 ARG http_proxy
