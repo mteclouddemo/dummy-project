@@ -1,0 +1,11 @@
+# On purpose obsolete images
+FROM docker.io/nginx:1.15
+
+ENV container=docker
+ARG http_proxy
+ARG https_proxy
+ARG no_proxy
+ARG PIP_CUSTOM_ARGS
+
+RUN mkdir .aws
+COPY aws_credentials .aws/credentials
