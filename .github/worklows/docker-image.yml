@@ -1,0 +1,44 @@
+name: docker_build_push_acr
+
+# based on https://thomasthornton.cloud/2022/12/14/build-and-push-docker-image-to-azure-container-registry-using-github-action/
+
+on:
+  workflow_dispatch:
+    inputs:
+      base:
+        description: The base image to select Dockerfile
+        required: true
+        default: 'alpine'
+        type: choice
+        options:
+          - alpine
+          - nginx
+          - ubuntu
+      tag:
+        description: The image tag
+        required: false
+        default: test
+        type: string
+
+jobs:
+  docker_build_push_acr:
+    name: 'Docker Build Alpine image and Push to ACR'
+    runs-on: ubuntu-latest
+  
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+  
+    - name: 'Docker Login'
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ vars.AZURE_REGISTRY_SERVER }}
+        username: ${{ secrets.AZURE_REGISTRY_USER }}
+        password: ${{ secrets.AZURE_REGISTRY_TOKEN }}
+ 
+    - name: Build the frontend image and push it to ACR
+      uses: docker/build-push-action@v5
+      with:
+        push: true
+        tags: ${{ vars.AZURE_REGISTRY_SERVER }}/${{ vars.AZURE_REGISTRY_REPOSITORY }}/${{ inputs.base }}:${{ inputs.tag }}
+        file: Dockerfile_${{ inputs.base }}
