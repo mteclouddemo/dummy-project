@@ -42,3 +42,8 @@ jobs:
         push: true
         tags: ${{ vars.AZURE_REGISTRY_SERVER }}/${{ vars.AZURE_REGISTRY_REPOSITORY }}/${{ inputs.base }}:${{ inputs.tag }}
         file: Dockerfile_${{ inputs.base }}
+
+    # Run Mapping Tool in MSDO
+    - name: Run Microsoft Security DevOps Analysis
+      uses: microsoft/security-devops-action@latest
+      id: msdo
